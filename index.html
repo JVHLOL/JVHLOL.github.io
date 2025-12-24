@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Links</title>
+<title>Fun Links</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
@@ -73,6 +73,17 @@ body.light .toggle-btn{
   background:rgba(255,255,255,0.1);
 }
 
+/* fun mode button */
+#fun-mode{
+  padding:.6rem .8rem;
+  border-radius:25px;
+  border:1px solid #555;
+  background:#111;
+  color:#fff;
+  cursor:pointer;
+  font-size:1rem;
+}
+
 /* main layout */
 main{
   column-count:5;
@@ -96,14 +107,14 @@ main{
   backdrop-filter:blur(10px);
   text-align:center;
   break-inside:avoid;
-  transition:transform .25s;
+  transition:transform .25s, box-shadow .25s;
 }
 .link-card:hover{
-  transform:scale(1.04);
-  box-shadow:0 0 18px rgba(255,255,255,0.15);
+  transform:scale(1.08) rotate(-1deg);
+  box-shadow:0 0 25px rgba(255,255,255,0.2);
 }
 body.light .link-card{background:rgba(0,0,0,.05);}
-body.light .link-card:hover{box-shadow:0 0 18px rgba(0,0,0,0.15);}
+body.light .link-card:hover{box-shadow:0 0 25px rgba(0,0,0,0.15);}
 
 .link-card a{
   text-decoration:none;
@@ -181,6 +192,7 @@ body.light #clock{
     </optgroup>
     <option value="random">🎲 Random</option>
   </select>
+  <button id="fun-mode">🎲 Fun Mode</button>
 </header>
 
 <div id="clock">Loading...</div>
@@ -207,15 +219,14 @@ body.light #clock{
 // particles
 const c=document.getElementById("particle-canvas"),x=c.getContext("2d");
 function r(){c.width=innerWidth;c.height=innerHeight}r();addEventListener("resize",r);
-let p=[...Array(120)].map(()=>({x:Math.random()*c.width,y:Math.random()*c.height,s:Math.random()*2+1,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4}));
+let p=[...Array(150)].map(()=>({x:Math.random()*c.width,y:Math.random()*c.height,s:Math.random()*2+1,vx:(Math.random()-.5)*.5,vy:(Math.random()-.5)*.5}));
 (function a(){x.clearRect(0,0,c.width,c.height);p.forEach(o=>{o.x+=o.vx;o.y+=o.vy;if(o.x<0||o.x>c.width)o.vx*=-1;if(o.y<0||o.y>c.height)o.vy*=-1;x.beginPath();x.arc(o.x,o.y,o.s,0,Math.PI*2);x.fillStyle="#fff";x.fill()});requestAnimationFrame(a)})();
 
 // search
-const s=document.getElementById("search-bar"),
-cards=[...document.querySelectorAll(".link-card")];
+const s=document.getElementById("search-bar"),cards=[...document.querySelectorAll(".link-card")];
 s.oninput=e=>cards.forEach(c=>c.style.display=c.innerText.toLowerCase().includes(e.target.value.toLowerCase())?"inline-block":"none");
 
-// mode
+// dark/light mode
 document.getElementById("mode-toggle").onclick=()=>document.body.classList.toggle("light");
 
 // clock
@@ -224,17 +235,100 @@ updateClock(); setInterval(updateClock,1000);
 
 // color menu + random
 document.getElementById("color-menu").addEventListener("change", e=>{
-  let color = e.target.value;
+  let color=e.target.value;
   if(color==="random"){
-    const colors = [
-      "#ff4500","#ff6347","#ff8c00","#ffd700","#b22222",
-      "#4b0082","#6a5acd","#20b2aa","#008b8b","#4682b4","#2e8b57","#40e0d0",
-      "#ffb6c1","#dda0dd","#87ceeb","#98fb98","#f5deb3",
-      "#2f4f4f","#191970","#4b3621","#800000","#0b3d91"
-    ];
-    color = colors[Math.floor(Math.random()*colors.length)];
+    const colors=["#ff4500","#ff6347","#ff8c00","#ffd700","#b22222","#4b0082","#6a5acd","#20b2aa","#008b8b","#4682b4","#2e8b57","#40e0d0","#ffb6c1","#dda0dd","#87ceeb","#98fb98","#f5deb3","#2f4f4f","#191970","#4b3621","#800000","#0b3d91"];
+    color=colors[Math.floor(Math.random()*colors.length)];
   }
   document.body.style.background=color;
+});
+
+// fun mode button
+document.getElementById("fun-mode").onclick=()=>{
+  const colors=["#ff4500","#ff6347","#20b2aa","#4b0082","#f5deb3","#98fb98","#191970"];
+  document.body.style.background=colors[Math.floor(Math.random()*colors.length)];
+  p.forEach(pt=>{pt.vx=(Math.random()-.5)*1.5; pt.vy=(Math.random()-.5)*1.5;});
+};
+
+// particle reaction on hover
+cards.forEach(card=>{card.addEventListener("mouseenter", ()=>{
+  p.forEach(pt=>{
+    const dx=pt.x-(card.offsetLeft+card.offsetWidth/2);
+    const dy=pt.y-(card.offsetTop+card.offsetHeight/2);
+    const dist=Math.sqrt(dx*dx+dy*dy);
+    if(dist<150){pt.vx+=(dx/dist)*2; pt.vy+=(dy/dist)*2;}
+  });
+});});
+
+// click fireworks
+cards.forEach((c,i)=>{
+  const link=c.querySelector('a');
+  link.addEventListener('click', ()=>{
+    for(let j=0;j<20;j++){
+      const fx=document.createElement('div');
+      fx.style.position='fixed';
+      fx.style.width='6px'; fx.style.height='6px';
+      fx.style.borderRadius='50%'; fx.style.background='#ffeb3b';
+      fx.style.left=(c.offsetLeft+c.offsetWidth/2)+'px';
+      fx.style.top=(c.offsetTop+c.offsetHeight/2)+'px';
+      fx.style.pointerEvents='none'; fx.style.opacity='1';
+      document.body.appendChild(fx);
+      const angle=Math.random()*2*Math.PI;
+      const speed=3+Math.random()*2;
+      let x=c.offsetLeft+c.offsetWidth/2; let y=c.offsetTop+c.offsetHeight/2;
+      let id=setInterval(()=>{
+        x+=Math.cos(angle)*speed; y+=Math.sin(angle)*speed;
+        fx.style.left=x+'px'; fx.style.top=y+'px';
+        fx.style.opacity-=0.02;
+        if(fx.style.opacity<=0){fx.remove(); clearInterval(id);}
+      },16);
+    }
+  });
+});
+
+// easter eggs in search
+s.addEventListener('input', e=>{
+  const val=e.target.value.toLowerCase();
+  if(val.includes("dog")) document.body.style.background="#ff69b4";
+  else if(val.includes("space")) document.body.style.background="#191970";
+  else if(val.includes("fun")) alert("🎉 You found an easter egg!");
+});
+
+// theme skins
+function applySkin(name){
+  if(name==="neon"){document.body.style.background="#0f0f0f"; p.forEach(pt=>pt.vx*=2);}
+  else if(name==="retro"){document.body.style.background="#f5deb3"; p.forEach(pt=>pt.vx*=0.5);}
+  else if(name==="underwater"){document.body.style.background="#20b2aa"; p.forEach(pt=>pt.vy*=0.3);}
+}
+document.addEventListener('keydown', e=>{
+  if(e.key==="1") applySkin("neon");
+  if(e.key==="2") applySkin("retro");
+  if(e.key==="3") applySkin("underwater");
+});
+
+// tiny mascot
+const mascot=document.createElement('div');
+mascot.innerText="🐙";
+mascot.style.position="fixed"; mascot.style.left="50px"; mascot.style.top="50px";
+mascot.style.fontSize="24px"; mascot.style.pointerEvents="none";
+document.body.appendChild(mascot);
+document.addEventListener('mousemove', e=>{
+  const mx=e.clientX, my=e.clientY;
+  const cx=parseFloat(mascot.style.left), cy=parseFloat(mascot.style.top);
+  mascot.style.left=cx+(mx-cx)*0.05+'px'; mascot.style.top=cy+(my-cy)*0.05+'px';
+});
+
+// optional click sound
+const clickSound=new Audio("https://freesound.org/data/previews/341/341695_3248244-lq.mp3");
+cards.forEach(c=>c.querySelector('a').addEventListener('click', ()=>{clickSound.currentTime=0; clickSound.play();}));
+
+// mini game secret
+let secretCount=0;
+document.body.addEventListener('click', e=>{
+  if(e.target.tagName!=="A"){
+    secretCount++;
+    if(secretCount===10){alert("🎮 Mini game unlocked! Click links fast!"); secretCount=0;}
+  }
 });
 </script>
 
