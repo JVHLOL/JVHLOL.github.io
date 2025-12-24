@@ -8,42 +8,72 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Poppins',sans-serif;background:#000;color:#fff;min-height:100vh}
+body{font-family:'Poppins',sans-serif;background:#000;color:#fff;min-height:100vh;transition:background .3s,color .3s}
 body.light{background:#f0f0f0;color:#111}
 
+/* header */
 header{
   display:flex;
   gap:1rem;
   justify-content:center;
   padding:1rem;
   flex-wrap:wrap;
-  align-items:center
+  align-items:center;
 }
 
+/* search bar */
 #search-bar{
   width:320px;
   padding:.6rem 1rem;
   border-radius:25px;
   border:none;
   background:rgba(255,255,255,.1);
-  color:#fff
+  color:#fff;
+  font-size:1rem;
 }
 body.light #search-bar{background:rgba(0,0,0,.1);color:#111}
 
-.toggle-btn, select{
+/* dark/light toggle */
+.toggle-btn{
   padding:.6rem 1rem;
   border-radius:25px;
   border:1px solid rgba(255,255,255,.3);
   background:rgba(255,255,255,.05);
   color:#fff;
-  cursor:pointer
+  cursor:pointer;
+  font-size:1rem;
 }
-body.light .toggle-btn, body.light select{
+body.light .toggle-btn{
   border:1px solid rgba(0,0,0,.3);
   background:rgba(0,0,0,.05);
-  color:#111
+  color:#111;
 }
 
+/* color menu as compact circle button */
+#color-menu{
+  padding:.5rem;
+  width:50px;
+  border-radius:50%;
+  border:1px solid #555;
+  background:#000;
+  color:#fff;
+  cursor:pointer;
+  font-size:0.8rem;
+  text-align:center;
+}
+#color-menu option{
+  background:#000;
+  color:#fff;
+}
+#color-menu optgroup{
+  color:#fff;
+  font-weight:700;
+}
+#color-menu option:hover, #color-menu option:checked{
+  background:rgba(255,255,255,0.1);
+}
+
+/* main layout */
 main{
   column-count:5;
   column-gap:1rem;
@@ -55,6 +85,7 @@ main{
 @media(max-width:650px){main{column-count:2}}
 @media(max-width:450px){main{column-count:1}}
 
+/* link cards */
 .link-card{
   display:inline-block;
   width:100%;
@@ -65,18 +96,23 @@ main{
   backdrop-filter:blur(10px);
   text-align:center;
   break-inside:avoid;
-  transition:transform .25s
+  transition:transform .25s;
 }
-.link-card:hover{transform:scale(1.04)}
-body.light .link-card{background:rgba(0,0,0,.05)}
+.link-card:hover{
+  transform:scale(1.04);
+  box-shadow:0 0 18px rgba(255,255,255,0.15);
+}
+body.light .link-card{background:rgba(0,0,0,.05);}
+body.light .link-card:hover{box-shadow:0 0 18px rgba(0,0,0,0.15);}
 
 .link-card a{
   text-decoration:none;
   font-weight:700;
-  color:#fff
+  color:#fff;
 }
 body.light .link-card a{color:#111}
 
+/* clock */
 #clock{
   position:fixed;
   top:14px;
@@ -86,23 +122,24 @@ body.light .link-card a{color:#111}
   padding:6px 10px;
   border-radius:12px;
   backdrop-filter:blur(10px);
-  border:1px solid rgba(255,255,255,0.25)
+  border:1px solid rgba(255,255,255,0.25);
+  z-index:10;
 }
 body.light #clock{
   background:rgba(0,0,0,0.08);
   color:#111;
-  border:1px solid rgba(0,0,0,.25)
+  border:1px solid rgba(0,0,0,.25);
 }
 
+/* particle canvas */
 #particle-canvas{
   position:fixed;
   inset:0;
   pointer-events:none;
-  z-index:-1
+  z-index:-1;
 }
 </style>
 </head>
-
 <body>
 
 <canvas id="particle-canvas"></canvas>
@@ -111,12 +148,38 @@ body.light #clock{
   <input id="search-bar" placeholder="Search...">
   <button class="toggle-btn" id="mode-toggle">🌙</button>
   <select id="color-menu">
-    <option disabled selected>Background Color</option>
-    <option value="#4b0082">Indigo</option>
-    <option value="#228b22">Forest Green</option>
-    <option value="#8b0000">Dark Red</option>
-    <option value="#ff4500">Orange Red</option>
-    <option value="#6a5acd">Slate Blue</option>
+    <option disabled selected>🎨</option>
+    <optgroup label="Warm">
+      <option value="#ff4500">Orange Red</option>
+      <option value="#ff6347">Tomato</option>
+      <option value="#ff8c00">Dark Orange</option>
+      <option value="#ffd700">Gold</option>
+      <option value="#b22222">Firebrick</option>
+    </optgroup>
+    <optgroup label="Cool">
+      <option value="#4b0082">Indigo</option>
+      <option value="#6a5acd">Slate Blue</option>
+      <option value="#20b2aa">Light Sea Green</option>
+      <option value="#008b8b">Teal</option>
+      <option value="#4682b4">Steel Blue</option>
+      <option value="#2e8b57">Sea Green</option>
+      <option value="#40e0d0">Turquoise</option>
+    </optgroup>
+    <optgroup label="Pastel">
+      <option value="#ffb6c1">Light Pink</option>
+      <option value="#dda0dd">Plum</option>
+      <option value="#87ceeb">Sky Blue</option>
+      <option value="#98fb98">Pale Green</option>
+      <option value="#f5deb3">Wheat</option>
+    </optgroup>
+    <optgroup label="Dark">
+      <option value="#2f4f4f">Dark Slate Grey</option>
+      <option value="#191970">Midnight Blue</option>
+      <option value="#4b3621">Brown</option>
+      <option value="#800000">Maroon</option>
+      <option value="#0b3d91">Royal Blue</option>
+    </optgroup>
+    <option value="random">🎲 Random</option>
   </select>
 </header>
 
@@ -145,48 +208,33 @@ body.light #clock{
 const c=document.getElementById("particle-canvas"),x=c.getContext("2d");
 function r(){c.width=innerWidth;c.height=innerHeight}r();addEventListener("resize",r);
 let p=[...Array(120)].map(()=>({x:Math.random()*c.width,y:Math.random()*c.height,s:Math.random()*2+1,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4}));
-(function a(){
-  x.clearRect(0,0,c.width,c.height);
-  p.forEach(o=>{
-    o.x+=o.vx;o.y+=o.vy;
-    if(o.x<0||o.x>c.width)o.vx*=-1;
-    if(o.y<0||o.y>c.height)o.vy*=-1;
-    x.beginPath();
-    x.arc(o.x,o.y,o.s,0,Math.PI*2);
-    x.fillStyle="#fff";
-    x.fill()
-  });
-  requestAnimationFrame(a)
-})();
+(function a(){x.clearRect(0,0,c.width,c.height);p.forEach(o=>{o.x+=o.vx;o.y+=o.vy;if(o.x<0||o.x>c.width)o.vx*=-1;if(o.y<0||o.y>c.height)o.vy*=-1;x.beginPath();x.arc(o.x,o.y,o.s,0,Math.PI*2);x.fillStyle="#fff";x.fill()});requestAnimationFrame(a)})();
 
 // search
 const s=document.getElementById("search-bar"),
 cards=[...document.querySelectorAll(".link-card")];
-s.oninput=e=>{
-  const q=e.target.value.toLowerCase();
-  cards.forEach(c=>{
-    c.style.display=c.innerText.toLowerCase().includes(q)?"inline-block":"none"
-  })
-};
+s.oninput=e=>cards.forEach(c=>c.style.display=c.innerText.toLowerCase().includes(e.target.value.toLowerCase())?"inline-block":"none");
 
 // mode
-document.getElementById("mode-toggle").onclick=()=>{
-  document.body.classList.toggle("light")
-};
+document.getElementById("mode-toggle").onclick=()=>document.body.classList.toggle("light");
 
 // clock
-function updateClock(){
-  const now=new Date();
-  document.getElementById("clock").innerText=
-    now.toLocaleDateString(undefined,{month:'short',day:'numeric'})+
-    " | "+
-    now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'})
-}
-updateClock();setInterval(updateClock,1000);
+function updateClock(){const now=new Date();document.getElementById('clock').innerText=now.toLocaleDateString(undefined,{month:'short',day:'numeric'})+" | "+now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'})}
+updateClock(); setInterval(updateClock,1000);
 
-// color menu
-document.getElementById("color-menu").addEventListener("change",e=>{
-  document.body.style.background=e.target.value
+// color menu + random
+document.getElementById("color-menu").addEventListener("change", e=>{
+  let color = e.target.value;
+  if(color==="random"){
+    const colors = [
+      "#ff4500","#ff6347","#ff8c00","#ffd700","#b22222",
+      "#4b0082","#6a5acd","#20b2aa","#008b8b","#4682b4","#2e8b57","#40e0d0",
+      "#ffb6c1","#dda0dd","#87ceeb","#98fb98","#f5deb3",
+      "#2f4f4f","#191970","#4b3621","#800000","#0b3d91"
+    ];
+    color = colors[Math.floor(Math.random()*colors.length)];
+  }
+  document.body.style.background=color;
 });
 </script>
 
