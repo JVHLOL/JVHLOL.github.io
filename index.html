@@ -3,40 +3,152 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ultimate Fun Links</title>
+<title>Fun Links</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Poppins',sans-serif;background:#000;color:#fff;min-height:100vh;transition:background .5s,color .5s;overflow-x:hidden;cursor:crosshair;}
-body.light{background:#f0f0f0;color:#111;}
-header{display:flex;gap:1rem;justify-content:center;padding:1rem;flex-wrap:wrap;align-items:center;}
-#search-bar{width:320px;padding:.6rem 1rem;border-radius:25px;border:none;background:rgba(255,255,255,.1);color:#fff;font-size:1rem;}
-body.light #search-bar{background:rgba(0,0,0,.1);color:#111;}
-.toggle-btn{padding:.6rem 1rem;border-radius:25px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.05);color:#fff;cursor:pointer;font-size:1rem;}
-body.light .toggle-btn{border:1px solid rgba(0,0,0,.3);background:rgba(0,0,0,.05);color:#111;}
-#color-menu{padding:.5rem;width:50px;border-radius:50%;border:1px solid #555;background:#000;color:#fff;cursor:pointer;font-size:.8rem;text-align:center;}
-#color-menu option{background:#000;color:#fff;}
-#fun-mode{padding:.6rem .8rem;border-radius:25px;border:1px solid #555;background:#111;color:#fff;cursor:pointer;font-size:1rem;}
-main{column-count:5;column-gap:1rem;max-width:1400px;margin:0 auto 2rem;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Poppins',sans-serif;background:#000;color:#fff;min-height:100vh;transition:background .3s,color .3s}
+body.light{background:#f0f0f0;color:#111}
+
+/* header */
+header{
+  display:flex;
+  gap:1rem;
+  justify-content:center;
+  padding:1rem;
+  flex-wrap:wrap;
+  align-items:center;
+}
+
+/* search bar */
+#search-bar{
+  width:320px;
+  padding:.6rem 1rem;
+  border-radius:25px;
+  border:none;
+  background:rgba(255,255,255,.1);
+  color:#fff;
+  font-size:1rem;
+}
+body.light #search-bar{background:rgba(0,0,0,.1);color:#111}
+
+/* dark/light toggle */
+.toggle-btn{
+  padding:.6rem 1rem;
+  border-radius:25px;
+  border:1px solid rgba(255,255,255,.3);
+  background:rgba(255,255,255,.05);
+  color:#fff;
+  cursor:pointer;
+  font-size:1rem;
+}
+body.light .toggle-btn{
+  border:1px solid rgba(0,0,0,.3);
+  background:rgba(0,0,0,.05);
+  color:#111;
+}
+
+/* color menu as compact circle button */
+#color-menu{
+  padding:.5rem;
+  width:50px;
+  border-radius:50%;
+  border:1px solid #555;
+  background:#000;
+  color:#fff;
+  cursor:pointer;
+  font-size:0.8rem;
+  text-align:center;
+}
+#color-menu option{
+  background:#000;
+  color:#fff;
+}
+#color-menu optgroup{
+  color:#fff;
+  font-weight:700;
+}
+#color-menu option:hover, #color-menu option:checked{
+  background:rgba(255,255,255,0.1);
+}
+
+/* fun mode button */
+#fun-mode{
+  padding:.6rem .8rem;
+  border-radius:25px;
+  border:1px solid #555;
+  background:#111;
+  color:#fff;
+  cursor:pointer;
+  font-size:1rem;
+}
+
+/* main layout */
+main{
+  column-count:5;
+  column-gap:1rem;
+  max-width:1400px;
+  margin:0 auto 2rem
+}
 @media(max-width:1200px){main{column-count:4}}
 @media(max-width:900px){main{column-count:3}}
 @media(max-width:650px){main{column-count:2}}
 @media(max-width:450px){main{column-count:1}}
-.link-card{display:inline-block;width:100%;margin-bottom:1rem;padding:1rem;border-radius:14px;background:rgba(255,255,255,.05);backdrop-filter:blur(10px);text-align:center;break-inside:avoid;transition:transform .25s,box-shadow .25s;}
-.link-card:hover{transform:scale(1.08) rotate(-1deg);box-shadow:0 0 25px rgba(255,255,255,0.2);}
+
+/* link cards */
+.link-card{
+  display:inline-block;
+  width:100%;
+  margin-bottom:1rem;
+  padding:1rem;
+  border-radius:14px;
+  background:rgba(255,255,255,.05);
+  backdrop-filter:blur(10px);
+  text-align:center;
+  break-inside:avoid;
+  transition:transform .25s, box-shadow .25s;
+}
+.link-card:hover{
+  transform:scale(1.08) rotate(-1deg);
+  box-shadow:0 0 25px rgba(255,255,255,0.2);
+}
 body.light .link-card{background:rgba(0,0,0,.05);}
-.link-card a{text-decoration:none;font-weight:700;color:#fff;}
-body.light .link-card a{color:#111;}
-#clock{position:fixed;top:14px;right:14px;font-size:.85rem;background:rgba(255,255,255,0.08);padding:6px 10px;border-radius:12px;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.25);z-index:10;}
-body.light #clock{background:rgba(0,0,0,0.08);color:#111;border:1px solid rgba(0,0,0,.25);}
-#particle-canvas{position:fixed;inset:0;pointer-events:none;z-index:-1;}
-.trail{position:fixed;width:8px;height:8px;border-radius:50%;pointer-events:none;mix-blend-mode:screen;}
-.update-box{position:fixed;bottom:14px;right:14px;max-width:360px;padding:.8rem .9rem .9rem;border-radius:14px;background:rgba(255,255,255,.08);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.25);z-index:10;animation:fadeIn .6s ease;}
-body.light .update-box{background:rgba(0,0,0,.08);border:1px solid rgba(0,0,0,.25);}
-.new-badge{display:inline-block;font-size:.65rem;padding:.2rem .5rem;border-radius:999px;background:#ff2d2d;color:#fff;font-weight:700;margin-bottom:.4rem;animation:glow 1.6s infinite;}
-@keyframes glow{0%{box-shadow:0 0 5px #ff2d2d}50%{box-shadow:0 0 14px #ff2d2d}100%{box-shadow:0 0 5px #ff2d2d}}
-.close-btn{position:absolute;top:6px;right:8px;border:none;background:none;color:inherit;font-size:1rem;cursor:pointer;}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+body.light .link-card:hover{box-shadow:0 0 25px rgba(0,0,0,0.15);}
+
+.link-card a{
+  text-decoration:none;
+  font-weight:700;
+  color:#fff;
+}
+body.light .link-card a{color:#111}
+
+/* clock */
+#clock{
+  position:fixed;
+  top:14px;
+  right:14px;
+  font-size:.85rem;
+  background:rgba(255,255,255,0.08);
+  padding:6px 10px;
+  border-radius:12px;
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,0.25);
+  z-index:10;
+}
+body.light #clock{
+  background:rgba(0,0,0,0.08);
+  color:#111;
+  border:1px solid rgba(0,0,0,.25);
+}
+
+/* particle canvas */
+#particle-canvas{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-1;
+}
 </style>
 </head>
 <body>
@@ -103,23 +215,23 @@ body.light .update-box{background:rgba(0,0,0,.08);border:1px solid rgba(0,0,0,.2
   <div class="link-card"><a href="https://goodwinterbreak.global.ssl.fastly.net" target="_blank">Bloxcraft UBG</a></div>
 </main>
 
-<div class="update-box" id="updateBox">
-  <button class="close-btn" id="closeUpdate">✕</button>
-  <div class="new-badge">NEW</div>
-  <strong>Update:</strong> All links merged, added particle effects, cursor trail, fireworks, mini-game, easter eggs, and fun modes!
-</div>
-
 <script>
-// clock
-function updateClock(){const now=new Date();document.getElementById('clock').innerText=now.toLocaleDateString(undefined,{month:'short',day:'numeric'})+" | "+now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'})}
-updateClock(); setInterval(updateClock,1000);
+// particles
+const c=document.getElementById("particle-canvas"),x=c.getContext("2d");
+function r(){c.width=innerWidth;c.height=innerHeight}r();addEventListener("resize",r);
+let p=[...Array(150)].map(()=>({x:Math.random()*c.width,y:Math.random()*c.height,s:Math.random()*2+1,vx:(Math.random()-.5)*.5,vy:(Math.random()-.5)*.5}));
+(function a(){x.clearRect(0,0,c.width,c.height);p.forEach(o=>{o.x+=o.vx;o.y+=o.vy;if(o.x<0||o.x>c.width)o.vx*=-1;if(o.y<0||o.y>c.height)o.vy*=-1;x.beginPath();x.arc(o.x,o.y,o.s,0,Math.PI*2);x.fillStyle="#fff";x.fill()});requestAnimationFrame(a)})();
 
-// search filter
+// search
 const s=document.getElementById("search-bar"),cards=[...document.querySelectorAll(".link-card")];
 s.oninput=e=>cards.forEach(c=>c.style.display=c.innerText.toLowerCase().includes(e.target.value.toLowerCase())?"inline-block":"none");
 
-// dark/light toggle
+// dark/light mode
 document.getElementById("mode-toggle").onclick=()=>document.body.classList.toggle("light");
+
+// clock
+function updateClock(){const now=new Date();document.getElementById('clock').innerText=now.toLocaleDateString(undefined,{month:'short',day:'numeric'})+" | "+now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'})}
+updateClock(); setInterval(updateClock,1000);
 
 // color menu + random
 document.getElementById("color-menu").addEventListener("change", e=>{
@@ -131,38 +243,31 @@ document.getElementById("color-menu").addEventListener("change", e=>{
   document.body.style.background=color;
 });
 
-// fun mode
+// fun mode button
 document.getElementById("fun-mode").onclick=()=>{
   const colors=["#ff4500","#ff6347","#20b2aa","#4b0082","#f5deb3","#98fb98","#191970"];
   document.body.style.background=colors[Math.floor(Math.random()*colors.length)];
   p.forEach(pt=>{pt.vx=(Math.random()-.5)*1.5; pt.vy=(Math.random()-.5)*1.5;});
 };
 
-// particles
-const canvas=document.getElementById("particle-canvas"),ctx=canvas.getContext("2d");
-function resizeCanvas(){canvas.width=innerWidth; canvas.height=innerHeight;}
-resizeCanvas(); window.addEventListener("resize",resizeCanvas);
-let p=[...Array(150)].map(()=>({x:Math.random()*canvas.width,y:Math.random()*canvas.height,s:Math.random()*2+1,vx:(Math.random()-.5)*.5,vy:(Math.random()-.5)*.5,type:Math.random()>0.7?"star":"circle"}));
-(function animate(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
+// particle reaction on hover
+cards.forEach(card=>{card.addEventListener("mouseenter", ()=>{
   p.forEach(pt=>{
-    pt.x+=pt.vx; pt.y+=pt.vy;
-    if(pt.x<0||pt.x>canvas.width) pt.vx*=-1;
-    if(pt.y<0||pt.y>canvas.height) pt.vy*=-1;
-    ctx.beginPath();
-    if(pt.type==="star"){ctx.moveTo(pt.x,pt.y);ctx.lineTo(pt.x+2,pt.y+4); ctx.strokeStyle="#fff"; ctx.stroke();} 
-    else {ctx.arc(pt.x,pt.y,pt.s,0,Math.PI*2); ctx.fillStyle="#fff"; ctx.fill();}
+    const dx=pt.x-(card.offsetLeft+card.offsetWidth/2);
+    const dy=pt.y-(card.offsetTop+card.offsetHeight/2);
+    const dist=Math.sqrt(dx*dx+dy*dy);
+    if(dist<150){pt.vx+=(dx/dist)*2; pt.vy+=(dy/dist)*2;}
   });
-  requestAnimationFrame(animate);
-})();
+});});
 
-// link click fireworks
+// click fireworks
 cards.forEach((c,i)=>{
   const link=c.querySelector('a');
   link.addEventListener('click', ()=>{
     for(let j=0;j<20;j++){
       const fx=document.createElement('div');
-      fx.style.position='fixed'; fx.style.width='6px'; fx.style.height='6px';
+      fx.style.position='fixed';
+      fx.style.width='6px'; fx.style.height='6px';
       fx.style.borderRadius='50%'; fx.style.background='#ffeb3b';
       fx.style.left=(c.offsetLeft+c.offsetWidth/2)+'px';
       fx.style.top=(c.offsetTop+c.offsetHeight/2)+'px';
@@ -181,24 +286,7 @@ cards.forEach((c,i)=>{
   });
 });
 
-// cursor trail
-document.addEventListener('mousemove', e=>{
-  const trail=document.createElement('div');
-  trail.className="trail"; trail.style.background=`hsl(${Math.random()*360},100%,50%)`;
-  trail.style.left=e.clientX+'px'; trail.style.top=e.clientY+'px';
-  document.body.appendChild(trail);
-  setTimeout(()=>trail.remove(),400);
-});
-
-// tiny mascot
-const mascot=document.createElement('div'); mascot.innerText="🐙"; mascot.style.position="fixed"; mascot.style.left="50px"; mascot.style.top="50px";
-mascot.style.fontSize="24px"; mascot.style.pointerEvents="none"; document.body.appendChild(mascot);
-document.addEventListener('mousemove', e=>{
-  const mx=e.clientX, my=e.clientY; const cx=parseFloat(mascot.style.left), cy=parseFloat(mascot.style.top);
-  mascot.style.left=cx+(mx-cx)*0.05+'px'; mascot.style.top=cy+(my-cy)*0.05+'px';
-});
-
-// easter eggs
+// easter eggs in search
 s.addEventListener('input', e=>{
   const val=e.target.value.toLowerCase();
   if(val.includes("dog")) document.body.style.background="#ff69b4";
@@ -206,18 +294,42 @@ s.addEventListener('input', e=>{
   else if(val.includes("fun")) alert("🎉 You found an easter egg!");
 });
 
-// mini game secret
-let secretCount=0;
-document.body.addEventListener('click', e=>{
-  if(e.target.tagName!=="A"){secretCount++; if(secretCount===10){alert("🎮 Mini game unlocked!"); secretCount=0;}}
+// theme skins
+function applySkin(name){
+  if(name==="neon"){document.body.style.background="#0f0f0f"; p.forEach(pt=>pt.vx*=2);}
+  else if(name==="retro"){document.body.style.background="#f5deb3"; p.forEach(pt=>pt.vx*=0.5);}
+  else if(name==="underwater"){document.body.style.background="#20b2aa"; p.forEach(pt=>pt.vy*=0.3);}
+}
+document.addEventListener('keydown', e=>{
+  if(e.key==="1") applySkin("neon");
+  if(e.key==="2") applySkin("retro");
+  if(e.key==="3") applySkin("underwater");
 });
 
-// click sound
+// tiny mascot
+const mascot=document.createElement('div');
+mascot.innerText="🐙";
+mascot.style.position="fixed"; mascot.style.left="50px"; mascot.style.top="50px";
+mascot.style.fontSize="24px"; mascot.style.pointerEvents="none";
+document.body.appendChild(mascot);
+document.addEventListener('mousemove', e=>{
+  const mx=e.clientX, my=e.clientY;
+  const cx=parseFloat(mascot.style.left), cy=parseFloat(mascot.style.top);
+  mascot.style.left=cx+(mx-cx)*0.05+'px'; mascot.style.top=cy+(my-cy)*0.05+'px';
+});
+
+// optional click sound
 const clickSound=new Audio("https://freesound.org/data/previews/341/341695_3248244-lq.mp3");
 cards.forEach(c=>c.querySelector('a').addEventListener('click', ()=>{clickSound.currentTime=0; clickSound.play();}));
 
-// close update box
-document.getElementById("closeUpdate").onclick = () => document.getElementById("updateBox").style.display = "none";
+// mini game secret
+let secretCount=0;
+document.body.addEventListener('click', e=>{
+  if(e.target.tagName!=="A"){
+    secretCount++;
+    if(secretCount===10){alert("🎮 Mini game unlocked! Click links fast!"); secretCount=0;}
+  }
+});
 </script>
 
 </body>
